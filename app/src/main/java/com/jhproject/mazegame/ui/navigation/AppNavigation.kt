@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jhproject.mazegame.ui.login.LoginScreen
+import com.jhproject.mazegame.ui.registration.RegistrationScreen
 
 enum class AppScreen(val route: String) {
     LOGIN_SCREEN("login_screen"),
@@ -20,7 +21,14 @@ fun AppNavigation() {
         startDestination = AppScreen.LOGIN_SCREEN.route
     ) {
         composable(AppScreen.LOGIN_SCREEN.route) {
-            LoginScreen()
+            LoginScreen(
+                navigateToRegistration = { appNavController.navigate(AppScreen.REGISTRATION_SCREEN.route) }
+            )
+        }
+        composable(AppScreen.REGISTRATION_SCREEN.route) {
+            RegistrationScreen(
+                navigateToLogin = { appNavController.navigate(AppScreen.LOGIN_SCREEN.route) }
+            )
         }
     }
 }

@@ -1,10 +1,9 @@
-package com.jhproject.mazegame.ui.login
+package com.jhproject.mazegame.ui.registration
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -21,9 +20,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -39,12 +35,10 @@ import com.jhproject.mazegame.R
 
 @Preview
 @Composable
-fun LoginScreen(
-    viewModel: LoginScreenViewModel = viewModel(),
-    navigateToRegistration: () -> Unit = {}
+fun RegistrationScreen(
+    viewModel: RegistrationScreenViewModel = viewModel(),
+    navigateToLogin: () -> Unit = {}
 ) {
-    var childMode by rememberSaveable { mutableStateOf(true) }
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -55,105 +49,19 @@ fun LoginScreen(
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-        if (childMode) {
-            ChildLogin(
-                viewModel = viewModel,
-                viewParentLogin = { childMode = !childMode }
-            )
-        }
-        else {
-            ParentLogin(
-                viewModel = viewModel,
-                viewChildLogin = { childMode = !childMode },
-                navigateToRegistration = navigateToRegistration
-            )
-        }
+        ParentRegistration(
+            viewModel = viewModel,
+            viewParentLogin = navigateToLogin
+        )
     }
 }
 
 @Composable
-fun ChildLogin(
-    viewModel: LoginScreenViewModel,
+fun ParentRegistration(
+    viewModel: RegistrationScreenViewModel,
     viewParentLogin: () -> Unit
 ) {
-    val childUsername by viewModel.childUsernameValue.collectAsState()
-    val childPassword by viewModel.childPasswordValue.collectAsState()
-    val focusManager = LocalFocusManager.current
-
-    Surface(
-        modifier = Modifier
-            .widthIn(max = 350.dp)
-            .heightIn(max = 350.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = stringResource(R.string.child_login),
-                style = MaterialTheme.typography.headlineSmall
-            )
-            Spacer(modifier = Modifier.height(15.dp))
-            OutlinedTextField(
-                value = childUsername,
-                onValueChange = { newValue ->
-                    viewModel.onChildUsernameValueChange(newValue)
-                },
-                label = {
-                    Text(text = stringResource(R.string.username))
-                },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        focusManager.clearFocus()
-                    }
-                )
-            )
-            Spacer(Modifier.height(15.dp))
-            OutlinedTextField(
-                value = childPassword,
-                onValueChange = { newValue ->
-                    viewModel.onChildPasswordValueChange(newValue)
-                },
-                label = {
-                    Text(text = stringResource(R.string.password))
-                },
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        focusManager.clearFocus()
-                    }
-                )
-            )
-            Spacer(Modifier.height(15.dp))
-            Button(
-                onClick = {}
-            ) {
-                Text(
-                    text = stringResource(R.string.login_label)
-                )
-            }
-            TextButton(
-                onClick = viewParentLogin
-            ) {
-                Text(text = stringResource(R.string.parent_login))
-            }
-        }
-    }
-}
-
-@Composable
-fun ParentLogin(
-    viewModel: LoginScreenViewModel,
-    viewChildLogin: () -> Unit,
-    navigateToRegistration: () -> Unit
-) {
+    val parentName by viewModel.parentNameValue.collectAsState()
     val parentUsername by viewModel.parentUsernameValue.collectAsState()
     val parentPassword by viewModel.parentPasswordValue.collectAsState()
     val focusManager = LocalFocusManager.current
@@ -161,7 +69,7 @@ fun ParentLogin(
     Surface(
         modifier = Modifier
             .widthIn(max = 350.dp)
-            .heightIn(max = 350.dp)
+            .heightIn(max = 450.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -169,8 +77,26 @@ fun ParentLogin(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = stringResource(R.string.parent_login),
+                text = stringResource(R.string.register_label),
                 style = MaterialTheme.typography.headlineSmall
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            OutlinedTextField(
+                value = parentName,
+                onValueChange = { newValue ->
+                    viewModel.onParentNameValueChange(newValue)
+                },
+                label = {
+                    Text(text = stringResource(R.string.name))
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+                )
             )
             Spacer(modifier = Modifier.height(15.dp))
             OutlinedTextField(
@@ -214,20 +140,13 @@ fun ParentLogin(
                 onClick = {}
             ) {
                 Text(
-                    text = stringResource(R.string.login_label)
+                    text = stringResource(R.string.register_label)
                 )
             }
-            Row() {
-                TextButton(
-                    onClick = viewChildLogin
-                ) {
-                    Text(text = stringResource(R.string.child_login))
-                }
-                TextButton(
-                    onClick = navigateToRegistration
-                ) {
-                    Text(text = stringResource(R.string.register_label))
-                }
+            TextButton(
+                onClick = viewParentLogin
+            ) {
+                Text(text = stringResource(R.string.login_label))
             }
         }
     }
