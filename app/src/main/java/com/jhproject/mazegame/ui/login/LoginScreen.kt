@@ -1,5 +1,6 @@
 package com.jhproject.mazegame.ui.login
 
+import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,14 +20,17 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -85,6 +89,15 @@ fun ChildLogin(
     val childPassword by viewModel.childPasswordValue.collectAsState()
     val focusManager = LocalFocusManager.current
 
+    val context = LocalContext.current
+    val mediaPlayer = remember { MediaPlayer.create(context, R.raw.buttonpressed) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            mediaPlayer.release()
+        }
+    }
+
     Surface(
         modifier = Modifier
             .widthIn(max = 350.dp)
@@ -142,6 +155,11 @@ fun ChildLogin(
                     viewModel.childLogin(childUsername, childPassword) {
                         navigateToChildLanding(it)
                     }
+                    if (!mediaPlayer.isPlaying) {
+                        mediaPlayer.start()
+                    } else {
+                        mediaPlayer.pause()
+                    }
                 }
             ) {
                 Text(
@@ -167,6 +185,15 @@ fun ParentLogin(
     val parentUsername by viewModel.parentUsernameValue.collectAsState()
     val parentPassword by viewModel.parentPasswordValue.collectAsState()
     val focusManager = LocalFocusManager.current
+
+    val context = LocalContext.current
+    val mediaPlayer = remember { MediaPlayer.create(context, R.raw.buttonpressed) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            mediaPlayer.release()
+        }
+    }
 
     Surface(
         modifier = Modifier
@@ -224,6 +251,11 @@ fun ParentLogin(
                 onClick = { 
                     viewModel.parentLogin(parentUsername, parentPassword) {
                         navigateToParentLanding(it)
+                    }
+                    if (!mediaPlayer.isPlaying) {
+                        mediaPlayer.start()
+                    } else {
+                        mediaPlayer.pause()
                     }
                 }
             ) {
