@@ -9,4 +9,19 @@
     <string name="password">Password</string>
     <string name="name">Name</string>
     <string name="register_label">Register</string>
+
+    <string name="loading">Loading…</string>
+
+    <string name="add_child">Add Child</string>
+    <string name="back">Back</string>
+
+
+    <string name="difficulty_label">Select a Difficulty</string>
+    <string name="level_label">Select a level</string>
+    <string name="level1">Level 1</string>
+    <string name="level2">Level 2</string>
+    <string name="level3">Level 3</string>
+
+    <string name="easy">Easy</string>
+    <string name="hard">Hard</string>
 </resources>

@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -93,7 +94,7 @@ fun ParentLandingScreen(
                     }
                     Spacer(modifier = Modifier.height(15.dp))
                     Button(onClick = { showDialog = true }) {
-                        Text("Add Child")
+                        Text(text = stringResource(R.string.add_child))
                     }
                 }
             }
@@ -104,7 +105,7 @@ fun ParentLandingScreen(
         if (showDialog) {
             AlertDialog(
                 onDismissRequest = { showDialog = false },
-                title = { Text("Add Child") },
+                title = { Text(text = stringResource(R.string.add_child)) },
                 text = {
                     Column {
                         TextField(value = childName, onValueChange = { childName = it }, placeholder = { Text("Name") })

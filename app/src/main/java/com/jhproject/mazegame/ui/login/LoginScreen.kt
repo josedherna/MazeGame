@@ -1,6 +1,7 @@
 package com.jhproject.mazegame.ui.login
 
 import android.media.MediaPlayer
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -88,8 +89,8 @@ fun ChildLogin(
     val childUsername by viewModel.childUsernameValue.collectAsState()
     val childPassword by viewModel.childPasswordValue.collectAsState()
     val focusManager = LocalFocusManager.current
-
     val context = LocalContext.current
+
     val mediaPlayer = remember { MediaPlayer.create(context, R.raw.buttonpressed) }
 
     DisposableEffect(Unit) {
@@ -152,9 +153,11 @@ fun ChildLogin(
             Spacer(Modifier.height(15.dp))
             Button(
                 onClick = {
-                    viewModel.childLogin(childUsername, childPassword) {
+                    viewModel.childLogin(childUsername, childPassword, {
                         navigateToChildLanding(it)
-                    }
+                    }, {
+                        Toast.makeText(context, "Invalid username or password", Toast.LENGTH_SHORT).show()
+                    })
                     if (!mediaPlayer.isPlaying) {
                         mediaPlayer.start()
                     } else {
@@ -185,8 +188,8 @@ fun ParentLogin(
     val parentUsername by viewModel.parentUsernameValue.collectAsState()
     val parentPassword by viewModel.parentPasswordValue.collectAsState()
     val focusManager = LocalFocusManager.current
-
     val context = LocalContext.current
+
     val mediaPlayer = remember { MediaPlayer.create(context, R.raw.buttonpressed) }
 
     DisposableEffect(Unit) {
@@ -249,9 +252,11 @@ fun ParentLogin(
             Spacer(Modifier.height(15.dp))
             Button(
                 onClick = { 
-                    viewModel.parentLogin(parentUsername, parentPassword) {
+                    viewModel.parentLogin(parentUsername, parentPassword, {
                         navigateToParentLanding(it)
-                    }
+                    }, {
+                        Toast.makeText(context, "Invalid username or password", Toast.LENGTH_SHORT).show()
+                    })
                     if (!mediaPlayer.isPlaying) {
                         mediaPlayer.start()
                     } else {

@@ -37,20 +37,24 @@ class LoginScreenViewModel(private val repository: AccountRepository) : ViewMode
         parentPassword.value = newValue
     }
 
-    fun childLogin(childUsername: String, childPassword: String, onLoginSuccess: (Int) -> Unit) {
+    fun childLogin(childUsername: String, childPassword: String, onLoginSuccess: (Int) -> Unit, onLoginFailure: () -> Unit) {
         viewModelScope.launch {
             val child = repository.loginChild(childUsername, childPassword)
             if (child != null) {
                 onLoginSuccess(child.childId)
+            } else {
+                onLoginFailure()
             }
         }
     }
 
-    fun parentLogin(parentUsername: String, parentPassword: String, onLoginSuccess: (Int) -> Unit) {
+    fun parentLogin(parentUsername: String, parentPassword: String, onLoginSuccess: (Int) -> Unit, onLoginFailure: () -> Unit) {
         viewModelScope.launch {
             val parent = repository.loginParent(parentUsername, parentPassword)
             if (parent != null) {
                 onLoginSuccess(parent.parent.parentId)
+            } else {
+                onLoginFailure()
             }
         }
     }
