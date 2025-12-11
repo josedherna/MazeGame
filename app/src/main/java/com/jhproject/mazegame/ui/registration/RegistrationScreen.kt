@@ -1,5 +1,6 @@
 package com.jhproject.mazegame.ui.registration
 
+import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,11 +19,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -68,8 +72,17 @@ fun ParentRegistration(
     val focusManager = LocalFocusManager.current
 
     val validInput = !parentName.isEmpty() && !parentUsername.isEmpty() && !parentPassword.isEmpty()
+    val context = LocalContext.current
 
-    Surface(
+    val mediaPlayer = remember { MediaPlayer.create(context, R.raw.buttonpressed) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            mediaPlayer.release()
+        }
+    }
+
+        Surface(
         modifier = Modifier
             .widthIn(max = 350.dp)
             .heightIn(max = 450.dp)
@@ -146,7 +159,13 @@ fun ParentRegistration(
                     viewModel.onParentNameValueChange("")
                     viewModel.onParentUsernameValueChange("")
                     viewModel.onParentPasswordValueChange("")
+                    if (!mediaPlayer.isPlaying) {
+                        mediaPlayer.start()
+                    } else {
+                        mediaPlayer.pause()
+                    }
                 }
+
             ) {
                 Text(
                     text = stringResource(R.string.register_label)

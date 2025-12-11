@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jhproject.mazegame.R
@@ -63,13 +68,33 @@ fun ParentLandingScreen(
                     Text(text = "Welcome, ${parent!!.parent.name}",
                         style = MaterialTheme.typography.headlineSmall)
                     Spacer(modifier = Modifier.height(15.dp))
-                    Text(text = "Children:")
-                    parent!!.children.forEach { child ->
-                        Text(text = child.username)
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp),
+                        contentAlignment = Alignment.CenterStart) {
+                        Text(
+                            text = "Children:",
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    LazyColumn(
+                        modifier = Modifier
+                            .heightIn(
+                                min = 100.dp,
+                                max = 150.dp
+                            )
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp),
+                    ) {
+                        parent!!.children.forEach { child ->
+                            item {
+                                Text(text = child.name)
+                            }
+                        }
                     }
                     Spacer(modifier = Modifier.height(15.dp))
                     Button(onClick = { showDialog = true }) {
-                        Text("Add Child")
+                        Text(text = stringResource(R.string.add_child))
                     }
                 }
             }
@@ -80,7 +105,7 @@ fun ParentLandingScreen(
         if (showDialog) {
             AlertDialog(
                 onDismissRequest = { showDialog = false },
-                title = { Text("Add Child") },
+                title = { Text(text = stringResource(R.string.add_child)) },
                 text = {
                     Column {
                         TextField(value = childName, onValueChange = { childName = it }, placeholder = { Text("Name") })
