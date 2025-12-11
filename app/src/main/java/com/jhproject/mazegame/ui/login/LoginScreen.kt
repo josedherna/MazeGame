@@ -41,7 +41,9 @@ import com.jhproject.mazegame.R
 @Composable
 fun LoginScreen(
     viewModel: LoginScreenViewModel = viewModel(),
-    navigateToRegistration: () -> Unit = {}
+    navigateToRegistration: () -> Unit = {},
+    navigateToParentLanding: (Int) -> Unit = {},
+    navigateToChildLanding: (Int) -> Unit = {}
 ) {
     var childMode by rememberSaveable { mutableStateOf(true) }
 
@@ -58,14 +60,16 @@ fun LoginScreen(
         if (childMode) {
             ChildLogin(
                 viewModel = viewModel,
-                viewParentLogin = { childMode = !childMode }
+                viewParentLogin = { childMode = !childMode },
+                navigateToChildLanding = navigateToChildLanding
             )
         }
         else {
             ParentLogin(
                 viewModel = viewModel,
                 viewChildLogin = { childMode = !childMode },
-                navigateToRegistration = navigateToRegistration
+                navigateToRegistration = navigateToRegistration,
+                navigateToParentLanding = navigateToParentLanding
             )
         }
     }
@@ -74,7 +78,8 @@ fun LoginScreen(
 @Composable
 fun ChildLogin(
     viewModel: LoginScreenViewModel,
-    viewParentLogin: () -> Unit
+    viewParentLogin: () -> Unit,
+    navigateToChildLanding: (Int) -> Unit
 ) {
     val childUsername by viewModel.childUsernameValue.collectAsState()
     val childPassword by viewModel.childPasswordValue.collectAsState()
@@ -133,7 +138,11 @@ fun ChildLogin(
             )
             Spacer(Modifier.height(15.dp))
             Button(
-                onClick = {}
+                onClick = {
+                    viewModel.childLogin(childUsername, childPassword) {
+                        navigateToChildLanding(it)
+                    }
+                }
             ) {
                 Text(
                     text = stringResource(R.string.login_label)
@@ -152,7 +161,8 @@ fun ChildLogin(
 fun ParentLogin(
     viewModel: LoginScreenViewModel,
     viewChildLogin: () -> Unit,
-    navigateToRegistration: () -> Unit
+    navigateToRegistration: () -> Unit,
+    navigateToParentLanding: (Int) -> Unit
 ) {
     val parentUsername by viewModel.parentUsernameValue.collectAsState()
     val parentPassword by viewModel.parentPasswordValue.collectAsState()
@@ -211,7 +221,11 @@ fun ParentLogin(
             )
             Spacer(Modifier.height(15.dp))
             Button(
-                onClick = {}
+                onClick = { 
+                    viewModel.parentLogin(parentUsername, parentPassword) {
+                        navigateToParentLanding(it)
+                    }
+                }
             ) {
                 Text(
                     text = stringResource(R.string.login_label)

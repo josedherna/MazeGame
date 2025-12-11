@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jhproject.mazegame.R
+import com.jhproject.mazegame.data.Parent
 
 @Preview
 @Composable
@@ -65,6 +66,8 @@ fun ParentRegistration(
     val parentUsername by viewModel.parentUsernameValue.collectAsState()
     val parentPassword by viewModel.parentPasswordValue.collectAsState()
     val focusManager = LocalFocusManager.current
+
+    val validInput = !parentName.isEmpty() && !parentUsername.isEmpty() && !parentPassword.isEmpty()
 
     Surface(
         modifier = Modifier
@@ -137,7 +140,13 @@ fun ParentRegistration(
             )
             Spacer(Modifier.height(15.dp))
             Button(
-                onClick = {}
+                enabled = validInput,
+                onClick = {
+                    viewModel.createParent(Parent(name = parentName, username = parentUsername, password = parentPassword))
+                    viewModel.onParentNameValueChange("")
+                    viewModel.onParentUsernameValueChange("")
+                    viewModel.onParentPasswordValueChange("")
+                }
             ) {
                 Text(
                     text = stringResource(R.string.register_label)

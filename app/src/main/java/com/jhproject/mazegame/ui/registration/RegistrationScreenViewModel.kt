@@ -1,11 +1,15 @@
 package com.jhproject.mazegame.ui.registration
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.jhproject.mazegame.data.AccountRepository
+import com.jhproject.mazegame.data.Parent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class RegistrationScreenViewModel : ViewModel() {
+class RegistrationScreenViewModel(private val repository: AccountRepository) : ViewModel() {
     private val parentName = MutableStateFlow("")
     val parentNameValue: StateFlow<String> = parentName.asStateFlow()
 
@@ -24,5 +28,11 @@ class RegistrationScreenViewModel : ViewModel() {
 
     fun onParentPasswordValueChange(newValue: String) {
         parentPassword.value = newValue
+    }
+
+    fun createParent(newParent: Parent) {
+        viewModelScope.launch {
+            repository.insertParent(newParent)
+        }
     }
 }
