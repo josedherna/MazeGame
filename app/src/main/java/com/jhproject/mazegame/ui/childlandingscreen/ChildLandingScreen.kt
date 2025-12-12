@@ -36,7 +36,8 @@ import com.jhproject.mazegame.R
 @Composable
 fun ChildLandingScreen(
     viewModel: ChildLandingScreenViewModel = viewModel(),
-    navigateToLevel1: () -> Unit = {}
+    navigateToLevel1: () -> Unit = {},
+    navigateToLevel2: () -> Unit = {},
 ) {
     val child by viewModel.child.collectAsState()
 
@@ -120,7 +121,9 @@ fun ChildLandingScreen(
                         difficultySelection = true
                         easyMode = false
                     },
-                    navigateToLevel1 = navigateToLevel1
+                    navigateToLevel1 = navigateToLevel1,
+                    navigateToLevel2 = navigateToLevel2
+
                 )
             }
             else {
@@ -145,7 +148,8 @@ fun ChildLandingScreen(
 @Composable
 fun EasyDifficulty(
     navigateBack: () -> Unit,
-    navigateToLevel1: () -> Unit
+    navigateToLevel1: () -> Unit,
+    navigateToLevel2: () -> Unit = {},
 ) {
     val context = LocalContext.current
 
@@ -192,6 +196,7 @@ fun EasyDifficulty(
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(onClick = {
+                navigateToLevel2()
                 if (!mediaPlayer.isPlaying) {
                     mediaPlayer.start()
                 } else {
