@@ -16,6 +16,9 @@ import com.jhproject.mazegame.data.ParentLandingScreenViewModelFactory
 import com.jhproject.mazegame.data.RegistrationViewModelFactory
 import com.jhproject.mazegame.ui.childlandingscreen.ChildLandingScreen
 import com.jhproject.mazegame.ui.childlandingscreen.ChildLandingScreenViewModel
+import com.jhproject.mazegame.ui.easylevels.Level1Screen
+import com.jhproject.mazegame.ui.easylevels.Level1ScreenViewModel
+import com.jhproject.mazegame.ui.easylevels.Level1ViewModelFactory
 import com.jhproject.mazegame.ui.login.LoginScreen
 import com.jhproject.mazegame.ui.login.LoginScreenViewModel
 import com.jhproject.mazegame.ui.parentlandingscreen.ParentLandingScreen
@@ -27,11 +30,13 @@ enum class AppScreen(val route: String) {
     LOGIN_SCREEN("login_screen"),
     REGISTRATION_SCREEN("registration_screen"),
     PARENT_SCREEN("parent_screen/{userId}"),
-    CHILD_SCREEN("child_screen/{childId}")
+    CHILD_SCREEN("child_screen/{childId}"),
+    LEVEL_1_SCREEN("level_1_screen/{childId}")
 }
 
 fun navigateToParentScreen(userId: Int) = "parent_screen/$userId"
 fun navigateToChildScreen(childId: Int) = "child_screen/$childId"
+fun navigateToLevel1Screen(childId: Int) = "level_1_screen/$childId"
 
 @Composable
 fun AppNavigation() {
@@ -94,11 +99,30 @@ fun AppNavigation() {
             if (childId != null) {
                 val factory = ChildLandingScreenViewModelFactory(context, backStackEntry.savedStateHandle)
                 val childLandingViewModel: ChildLandingScreenViewModel = viewModel(factory = factory)
-                ChildLandingScreen(viewModel = childLandingViewModel)
+                ChildLandingScreen(viewModel = childLandingViewModel) { appNavController.navigate(navigateToLevel1Screen(childId)) }
             } else {
                 Toast.makeText(
                     context,
                     "Invalid username or password",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        composable(
+            route = AppScreen.LEVEL_1_SCREEN.route,
+            arguments = listOf(
+                navArgument("childId") { type = NavType.IntType } // Define the argument type
+            )
+        ) { backStackEntry ->
+            val childId = backStackEntry.arguments?.getInt("childId")
+            if (childId != null) {
+                val factory = Level1ViewModelFactory(context, backStackEntry.savedStateHandle)
+                val level1ViewModel: Level1ScreenViewModel = viewModel(factory = factory)
+                Level1Screen(viewModel = level1ViewModel, onBack = { appNavController.popBackStack() })
+            } else {
+                Toast.makeText(
+                    context,
+                    "Error, please try again",
                     Toast.LENGTH_SHORT
                 ).show()
             }

@@ -35,13 +35,13 @@ import com.jhproject.mazegame.R
 
 @Composable
 fun ChildLandingScreen(
-    viewModel: ChildLandingScreenViewModel = viewModel()
+    viewModel: ChildLandingScreenViewModel = viewModel(),
+    navigateToLevel1: () -> Unit = {}
 ) {
     val child by viewModel.child.collectAsState()
 
     var easyMode by rememberSaveable { mutableStateOf(true) }
     var difficultySelection by rememberSaveable() { mutableStateOf(true) }
-
     val context = LocalContext.current
 
     val mediaPlayer = remember { MediaPlayer.create(context, R.raw.buttonpressed) }
@@ -88,7 +88,6 @@ fun ChildLandingScreen(
                         Button(onClick = {
                             easyMode = true
                             difficultySelection = false
-
                             if (!mediaPlayer.isPlaying) {
                                 mediaPlayer.start()
                             } else {
@@ -102,7 +101,6 @@ fun ChildLandingScreen(
                         Button(onClick = {
                             easyMode = false
                             difficultySelection = false
-
                             if (!mediaPlayer.isPlaying) {
                                 mediaPlayer.start()
                             } else {
@@ -121,7 +119,8 @@ fun ChildLandingScreen(
                     navigateBack = {
                         difficultySelection = true
                         easyMode = false
-                    }
+                    },
+                    navigateToLevel1 = navigateToLevel1
                 )
             }
             else {
@@ -145,7 +144,8 @@ fun ChildLandingScreen(
 
 @Composable
 fun EasyDifficulty(
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    navigateToLevel1: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -179,6 +179,7 @@ fun EasyDifficulty(
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(onClick = {
+                navigateToLevel1()
                 if (!mediaPlayer.isPlaying) {
                     mediaPlayer.start()
                 } else {
@@ -256,37 +257,19 @@ fun HardDifficulty(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = {
-                if (!mediaPlayer.isPlaying) {
-                    mediaPlayer.start()
-                } else {
-                    mediaPlayer.pause()
-                }
-            }) {
+            Button(onClick = { }) {
                 Text(text = stringResource(R.string.level1))
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = {
-                if (!mediaPlayer.isPlaying) {
-                    mediaPlayer.start()
-                } else {
-                    mediaPlayer.pause()
-                }
-            }) {
+            Button(onClick = { }) {
                 Text(text = stringResource(R.string.level2))
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = {
-                if (!mediaPlayer.isPlaying) {
-                    mediaPlayer.start()
-                } else {
-                    mediaPlayer.pause()
-                }
-            }) {
+            Button(onClick = { }) {
                 Text(text = stringResource(R.string.level3))
             }
 

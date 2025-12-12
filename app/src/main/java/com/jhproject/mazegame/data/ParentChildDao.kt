@@ -26,4 +26,7 @@ interface ParentChildDao {
     @Transaction
     @Query("SELECT * FROM parents WHERE parentId = :id")
     suspend fun getParentWithChildren(id: Int): ParentWithChildren?
+
+    @Insert
+    suspend fun insertProgressLog(progressLog: ProgressLogs)
 }
