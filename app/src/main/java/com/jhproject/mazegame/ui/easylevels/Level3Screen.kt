@@ -2,10 +2,8 @@ package com.jhproject.mazegame.ui.easylevels
 
 import android.content.res.Configuration
 import android.widget.Toast
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -34,11 +32,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -50,41 +45,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import com.jhproject.mazegame.R
-
-sealed class Command(val label: String) {
-    object Up : Command("Up")
-    object Down : Command("Down")
-    object Left : Command("Left")
-    object Right : Command("Right")
-}
+import kotlin.collections.plus
 
 @Preview
 @Composable
-fun Level1Screen(
-    viewModel: Level1ScreenViewModel = viewModel(),
+fun Level3Screen(
+    viewModel: Level3ScreenViewModel = viewModel(),
     playerBitmap: ImageBitmap = ImageBitmap.imageResource(R.drawable.sentiment_satisfied_45dp_e3e3e3_fill1_wght400_grad0_opsz48),
     onBack: () -> Unit = {}
 ) {
     val maze = listOf(
-        listOf(1,1,1,1,1,1,1),
-        listOf(1,0,0,0,0,0,1),
-        listOf(1,0,1,1,1,0,1),
-        listOf(1,0,0,0,1,0,1),
-        listOf(1,1,1,0,1,0,1),
-        listOf(1,0,0,0,0,0,1),
-        listOf(1,1,1,1,1,2,1)
+        listOf(1,1,1,1,1,1,1,1,1),
+        listOf(1,0,0,0,0,0,0,0,1),
+        listOf(1,0,1,1,1,1,0,1,1),
+        listOf(1,0,1,0,0,0,0,1,1),
+        listOf(1,0,1,0,1,0,1,1,1),
+        listOf(1,0,0,0,1,0,0,0,1),
+        listOf(1,1,1,0,1,1,1,0,1),
+        listOf(1,0,0,0,0,0,0,0,1),
+        listOf(1,1,1,1,1,1,1,2,1)
     )
 
     var playerRow by remember { mutableIntStateOf(1) }
-    var playerCol by remember { mutableStateOf(1) }
+    var playerCol by remember { mutableIntStateOf(1) }
     var hasWon by remember { mutableStateOf(false) }
     var commandList by remember { mutableStateOf(listOf<Command>()) }
 
@@ -300,8 +286,8 @@ fun Level1Screen(
         else {
             Row(
                 modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
+                    .fillMaxSize()
+                    .padding(16.dp)
             ) {
                 MazeCanvas(
                     maze = maze,
@@ -424,117 +410,5 @@ fun Level1Screen(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun MazeCanvas(
-    maze: List<List<Int>>,
-    playerRow: Int,
-    playerCol: Int,
-    playerBitmap: ImageBitmap,
-    modifier: Modifier = Modifier
-) {
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val surfaceColor = MaterialTheme.colorScheme.surface
-    val secondaryColor = MaterialTheme.colorScheme.secondary
-    
-    Canvas(modifier = modifier) {
-        val cellSize = size.width / maze[0].size
-        val playerSize = cellSize * 0.8f
-
-        for (r in maze.indices) {
-            for (c in maze[r].indices) {
-                when (maze[r][c]) {
-                    0 -> drawRect(
-                        color = surfaceColor,
-                        topLeft = Offset(c * cellSize, r * cellSize),
-                        size = Size(cellSize, cellSize)
-                    )
-                    1 -> drawRect(
-                        color = primaryColor,
-                        topLeft = Offset(c * cellSize, r * cellSize),
-                        size = Size(cellSize, cellSize)
-                    )
-                    2 -> drawRect(
-                        color = Color.Yellow,
-                        topLeft = Offset(c * cellSize, r * cellSize),
-                        size = Size(cellSize, cellSize)
-                    )
-                }
-            }
-        }
-
-        drawImage(
-            image = playerBitmap,
-            dstOffset = IntOffset(
-                (playerCol * cellSize).toInt(),
-                (playerRow * cellSize).toInt()
-            ),
-            dstSize = IntSize(
-                cellSize.toInt(),
-                cellSize.toInt()
-            ),
-            colorFilter = ColorFilter.tint(secondaryColor)
-        )
-    }
-}
-
-@Composable
-fun CommandDraggable(
-    command: Command,
-    onDragStart: (Offset) -> Unit,
-    onDrag: (Offset) -> Unit,
-    onDragEnd: () -> Unit
-) {
-    var globalTopLeft by remember { mutableStateOf(Offset.Zero) }
-
-    Box(
-        modifier = Modifier
-            .padding(8.dp)
-            .onGloballyPositioned { coords ->
-                globalTopLeft = coords.boundsInWindow().topLeft
-            }
-            .pointerInput(command) {
-                detectDragGestures(
-                    onDragStart = { offsetInLocal ->
-                        val startInWindow = globalTopLeft + offsetInLocal
-                        onDragStart(startInWindow)
-                    },
-                    onDrag = { change, dragAmount ->
-                        onDrag(dragAmount)
-                        change.consume()
-                    },
-                    onDragEnd = {
-                        onDragEnd()
-                    },
-                    onDragCancel = {
-                        onDragEnd()
-                    }
-                )
-            }
-            .background(Color.DarkGray, RoundedCornerShape(8.dp))
-            .padding(12.dp)
-    ) {
-        Text(command.label, color = Color.White)
-    }
-}
-
-fun executeCommands(
-    commandList: List<Command>,
-    tryMove: (Int, Int) -> Unit,
-    onFinish: () -> Unit
-) {
-    CoroutineScope(Dispatchers.Main).launch {
-        for (command in commandList) {
-            when (command) {
-                Command.Up -> tryMove(-1, 0)
-                Command.Down -> tryMove(1, 0)
-                Command.Left -> tryMove(0, -1)
-                Command.Right -> tryMove(0, 1)
-            }
-            delay(500)
-        }
-        onFinish()
     }
 }

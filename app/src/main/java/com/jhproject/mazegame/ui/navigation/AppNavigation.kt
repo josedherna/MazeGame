@@ -22,6 +22,9 @@ import com.jhproject.mazegame.ui.easylevels.Level1ViewModelFactory
 import com.jhproject.mazegame.ui.easylevels.Level2Screen
 import com.jhproject.mazegame.ui.easylevels.Level2ScreenViewModel
 import com.jhproject.mazegame.ui.easylevels.Level2ViewModelFactory
+import com.jhproject.mazegame.ui.easylevels.Level3Screen
+import com.jhproject.mazegame.ui.easylevels.Level3ScreenViewModel
+import com.jhproject.mazegame.ui.easylevels.Level3ViewModelFactory
 import com.jhproject.mazegame.ui.login.LoginScreen
 import com.jhproject.mazegame.ui.login.LoginScreenViewModel
 import com.jhproject.mazegame.ui.parentlandingscreen.ParentLandingScreen
@@ -35,7 +38,8 @@ enum class AppScreen(val route: String) {
     PARENT_SCREEN("parent_screen/{userId}"),
     CHILD_SCREEN("child_screen/{childId}"),
     EASYLEVEL_1_SCREEN("easylevel_1_screen/{childId}"),
-    EASYLEVEL_2_SCREEN("easylevel_2_screen/{childId}")
+    EASYLEVEL_2_SCREEN("easylevel_2_screen/{childId}"),
+    EASYLEVEL_3_SCREEN("easylevel_3_screen/{childId}")
 }
 
 fun navigateToParentScreen(userId: Int) = "parent_screen/$userId"
@@ -43,6 +47,8 @@ fun navigateToChildScreen(childId: Int) = "child_screen/$childId"
 fun navigateToLevel1Screen(childId: Int) = "easylevel_1_screen/$childId"
 
 fun navigateToLevel2Screen(childId: Int) = "easylevel_2_screen/$childId"
+
+fun navigateToLevel3Screen(childId: Int) = "easylevel_3_screen/$childId"
 
 @Composable
 fun AppNavigation() {
@@ -106,8 +112,9 @@ fun AppNavigation() {
                 val factory = ChildLandingScreenViewModelFactory(context, backStackEntry.savedStateHandle)
                 val childLandingViewModel: ChildLandingScreenViewModel = viewModel(factory = factory)
                 ChildLandingScreen(viewModel = childLandingViewModel,
-                    navigateToLevel1 = { appNavController.navigate(navigateToLevel1Screen(childId)) },
-                    navigateToLevel2 = { appNavController.navigate(navigateToLevel2Screen(childId)) }
+                    navigateToEasyLevel1 = { appNavController.navigate(navigateToLevel1Screen(childId)) },
+                    navigateToEasyLevel2 = { appNavController.navigate(navigateToLevel2Screen(childId)) },
+                    navigateToEasyLevel3 = { appNavController.navigate(navigateToLevel3Screen(childId)) }
                 )
             } else {
                 Toast.makeText(
@@ -147,6 +154,25 @@ fun AppNavigation() {
                 val factory = Level2ViewModelFactory(context, backStackEntry.savedStateHandle)
                 val level2ViewModel: Level2ScreenViewModel = viewModel(factory = factory)
                 Level2Screen(viewModel = level2ViewModel, onBack = { appNavController.popBackStack() })
+            } else {
+                Toast.makeText(
+                    context,
+                    "Error, please try again",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        composable(
+            route = AppScreen.EASYLEVEL_3_SCREEN.route,
+            arguments = listOf(
+                navArgument("childId") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val childId = backStackEntry.arguments?.getInt("childId")
+            if (childId != null) {
+                val factory = Level3ViewModelFactory(context, backStackEntry.savedStateHandle)
+                val level3ViewModel: Level3ScreenViewModel = viewModel(factory = factory)
+                Level3Screen(viewModel = level3ViewModel, onBack = { appNavController.popBackStack() })
             } else {
                 Toast.makeText(
                     context,

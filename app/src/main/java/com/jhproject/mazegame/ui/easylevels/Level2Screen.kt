@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -66,8 +67,8 @@ fun Level2Screen(
         listOf(1,1,1,1,1,1,1,1)
     )
 
-    var playerRow by remember { mutableStateOf(1) }
-    var playerCol by remember { mutableStateOf(1) }
+    var playerRow by remember { mutableIntStateOf(1) }
+    var playerCol by remember { mutableIntStateOf(1) }
     var hasWon by remember { mutableStateOf(false) }
     var commandList by remember { mutableStateOf(listOf<Command>()) }
 
