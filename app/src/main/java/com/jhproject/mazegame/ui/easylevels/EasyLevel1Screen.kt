@@ -93,7 +93,6 @@ fun EasyLevel1Screen(
     var dragVisible by remember { mutableStateOf(false) }
 
     val secondaryColor = MaterialTheme.colorScheme.secondary
-    val onSecondaryColor = MaterialTheme.colorScheme.onSecondary
 
 
     var dropBounds by remember { mutableStateOf<androidx.compose.ui.geometry.Rect?>(null) }
@@ -488,6 +487,8 @@ fun CommandDraggable(
     onDragEnd: () -> Unit
 ) {
     var globalTopLeft by remember { mutableStateOf(Offset.Zero) }
+    val secondaryColor = MaterialTheme.colorScheme.secondary
+    val onSecondaryColor = MaterialTheme.colorScheme.onSecondary
 
     Box(
         modifier = Modifier
@@ -513,10 +514,10 @@ fun CommandDraggable(
                     }
                 )
             }
-            .background(Color.DarkGray, RoundedCornerShape(8.dp))
+            .background(secondaryColor, RoundedCornerShape(8.dp))
             .padding(12.dp)
     ) {
-        Text(command.label, color = Color.White)
+        Text(command.label, color = onSecondaryColor)
     }
 }
 

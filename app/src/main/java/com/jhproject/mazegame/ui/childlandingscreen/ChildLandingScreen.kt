@@ -36,10 +36,11 @@ import com.jhproject.mazegame.R
 @Composable
 fun ChildLandingScreen(
     viewModel: ChildLandingScreenViewModel = viewModel(),
-    navigateToEasyLevel1: () -> Unit = {},
-    navigateToEasyLevel2: () -> Unit = {},
-    navigateToEasyLevel3: () -> Unit = {},
-    navigateToHardLevel1: () -> Unit = {}
+    navigateToEasyLevel1: () -> Unit,
+    navigateToEasyLevel2: () -> Unit,
+    navigateToEasyLevel3: () -> Unit,
+    navigateToHardLevel1: () -> Unit,
+    navigateToHardLevel2: () -> Unit
 ) {
     val child by viewModel.child.collectAsState()
 
@@ -134,7 +135,8 @@ fun ChildLandingScreen(
                     navigateBack = {
                         difficultySelection = true
                     },
-                    navigateToLevel1 = navigateToHardLevel1
+                    navigateToLevel1 = navigateToHardLevel1,
+                    navigateToLevel2 = navigateToHardLevel2
                 )
             }
         } else {
@@ -153,8 +155,8 @@ fun ChildLandingScreen(
 fun EasyDifficulty(
     navigateBack: () -> Unit,
     navigateToLevel1: () -> Unit,
-    navigateToLevel2: () -> Unit = {},
-    navigateToLevel3: () -> Unit = {}
+    navigateToLevel2: () -> Unit,
+    navigateToLevel3: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -237,6 +239,8 @@ fun EasyDifficulty(
 fun HardDifficulty(
     navigateBack: () -> Unit,
     navigateToLevel1: () -> Unit,
+    navigateToLevel2: () -> Unit,
+    navigateToLevel3: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -284,7 +288,16 @@ fun HardDifficulty(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = { }) {
+            Button(
+                onClick = {
+                    navigateToLevel2()
+                    if (!mediaPlayer.isPlaying) {
+                        mediaPlayer.start()
+                    } else {
+                        mediaPlayer.pause()
+                    }
+                }
+            ) {
                 Text(text = stringResource(R.string.level2))
             }
 

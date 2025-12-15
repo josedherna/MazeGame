@@ -79,7 +79,6 @@ fun EasyLevel3Screen(
     var dragVisible by remember { mutableStateOf(false) }
 
     val secondaryColor = MaterialTheme.colorScheme.secondary
-    val onSecondaryColor = MaterialTheme.colorScheme.onSecondary
 
 
     var dropBounds by remember { mutableStateOf<androidx.compose.ui.geometry.Rect?>(null) }

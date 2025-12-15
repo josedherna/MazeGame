@@ -56,24 +56,25 @@ import kotlin.collections.plus
 
 @Preview
 @Composable
-fun HardLevel1Screen(
-    viewModel: HardLevel1ScreenViewModel = viewModel(),
+fun HardLevel2Screen(
+    viewModel: HardLevel2ScreenViewModel = viewModel(),
     playerBitmap: ImageBitmap = ImageBitmap.imageResource(R.drawable.sentiment_satisfied_45dp_e3e3e3_fill1_wght400_grad0_opsz48),
     onBack: () -> Unit = {}
 ) {
     val maze = listOf(
-        listOf(1,1,1,1,1,1,1,1,1,1,2,1),
-        listOf(1,0,0,0,0,0,1,0,0,0,0,1),
-        listOf(1,0,1,1,1,1,1,1,1,1,0,1),
-        listOf(1,0,0,0,0,0,0,0,0,1,0,1),
-        listOf(1,0,1,0,1,1,1,1,0,1,0,1),
-        listOf(1,0,1,0,1,0,0,0,0,1,0,1),
-        listOf(1,1,1,0,1,0,1,1,1,1,0,1),
-        listOf(1,0,1,1,1,0,1,0,0,0,0,1),
-        listOf(1,0,1,0,0,0,1,0,1,1,1,1),
-        listOf(1,0,1,0,1,1,1,0,1,0,0,1),
-        listOf(1,0,0,0,0,0,0,0,0,0,0,1),
-        listOf(1,1,1,1,1,1,1,1,1,1,1,1)
+        listOf(1,1,1,1,1,1,1,2,1,1,1,1,1),
+        listOf(1,0,0,0,0,0,1,0,0,0,0,0,1),
+        listOf(1,0,1,1,1,0,1,0,1,1,1,0,1),
+        listOf(1,0,1,0,0,0,1,0,1,0,0,0,1),
+        listOf(1,0,1,0,1,1,1,0,1,1,1,0,1),
+        listOf(1,0,1,0,0,0,1,0,0,0,1,0,1),
+        listOf(1,0,1,1,1,1,1,1,1,0,1,0,1),
+        listOf(1,0,0,0,0,0,0,0,1,0,1,0,1),
+        listOf(1,1,1,1,1,1,0,0,1,0,1,0,1),
+        listOf(1,0,0,0,0,1,0,1,1,0,0,0,1),
+        listOf(1,0,1,1,0,1,0,0,0,1,1,0,1),
+        listOf(1,0,0,1,0,0,0,1,0,0,0,0,1),
+        listOf(1,1,1,1,1,1,1,1,1,1,1,1,1)
     )
 
     var playerRow by remember { mutableIntStateOf(1) }
