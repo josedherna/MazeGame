@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class Level1ScreenViewModel(
+class EasyLevel2ScreenViewModel(
     private val repository: AccountRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -22,7 +22,7 @@ class Level1ScreenViewModel(
             val progress = if (hasWon) "passed" else "fail"
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
             val currentDateTime = sdf.format(Date())
-            val progressLog = ProgressLogs(childId = childId, progress = progress, level = "Easy Level 1", dateTime = currentDateTime)
+            val progressLog = ProgressLogs(childId = childId, progress = progress, level = "Easy Level 2", dateTime = currentDateTime)
             repository.insertProgressLog(progressLog)
         }
     }

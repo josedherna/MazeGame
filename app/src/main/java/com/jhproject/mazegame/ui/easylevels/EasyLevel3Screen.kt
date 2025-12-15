@@ -48,23 +48,25 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jhproject.mazegame.R
+import kotlin.collections.plus
 
 @Preview
 @Composable
-fun Level2Screen(
-    viewModel: Level2ScreenViewModel = viewModel(),
+fun EasyLevel3Screen(
+    viewModel: EasyLevel3ScreenViewModel = viewModel(),
     playerBitmap: ImageBitmap = ImageBitmap.imageResource(R.drawable.sentiment_satisfied_45dp_e3e3e3_fill1_wght400_grad0_opsz48),
     onBack: () -> Unit = {}
 ) {
     val maze = listOf(
-        listOf(1,1,1,1,1,1,1,1),
-        listOf(1,0,0,0,0,0,0,1),
-        listOf(1,0,1,1,1,1,0,1),
-        listOf(1,0,1,0,0,0,0,1),
-        listOf(1,0,1,0,1,0,1,1),
-        listOf(1,0,0,0,1,0,1,1),
-        listOf(1,0,1,0,1,0,0,2),
-        listOf(1,1,1,1,1,1,1,1)
+        listOf(1,1,1,1,1,1,1,1,1),
+        listOf(1,0,0,0,0,0,0,0,1),
+        listOf(1,0,1,1,1,1,0,1,1),
+        listOf(1,0,1,0,0,0,0,1,1),
+        listOf(1,0,1,0,1,0,1,1,1),
+        listOf(1,0,0,0,1,0,0,0,1),
+        listOf(1,1,1,0,1,1,1,0,1),
+        listOf(1,0,0,0,0,0,0,0,1),
+        listOf(1,1,1,1,1,1,1,2,1)
     )
 
     var playerRow by remember { mutableIntStateOf(1) }

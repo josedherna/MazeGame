@@ -68,8 +68,8 @@ sealed class Command(val label: String) {
 
 @Preview
 @Composable
-fun Level1Screen(
-    viewModel: Level1ScreenViewModel = viewModel(),
+fun EasyLevel1Screen(
+    viewModel: EasyLevel1ScreenViewModel = viewModel(),
     playerBitmap: ImageBitmap = ImageBitmap.imageResource(R.drawable.sentiment_satisfied_45dp_e3e3e3_fill1_wght400_grad0_opsz48),
     onBack: () -> Unit = {}
 ) {
@@ -84,7 +84,7 @@ fun Level1Screen(
     )
 
     var playerRow by remember { mutableIntStateOf(1) }
-    var playerCol by remember { mutableStateOf(1) }
+    var playerCol by remember { mutableIntStateOf(1) }
     var hasWon by remember { mutableStateOf(false) }
     var commandList by remember { mutableStateOf(listOf<Command>()) }
 

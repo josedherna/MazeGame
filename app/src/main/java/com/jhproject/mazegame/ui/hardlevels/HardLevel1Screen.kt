@@ -1,4 +1,4 @@
-package com.jhproject.mazegame.ui.easylevels
+package com.jhproject.mazegame.ui.hardlevels
 
 import android.content.res.Configuration
 import android.widget.Toast
@@ -48,25 +48,32 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jhproject.mazegame.R
+import com.jhproject.mazegame.ui.easylevels.Command
+import com.jhproject.mazegame.ui.easylevels.CommandDraggable
+import com.jhproject.mazegame.ui.easylevels.MazeCanvas
+import com.jhproject.mazegame.ui.easylevels.executeCommands
 import kotlin.collections.plus
 
 @Preview
 @Composable
-fun Level3Screen(
-    viewModel: Level3ScreenViewModel = viewModel(),
+fun HardLevel1Screen(
+    viewModel: HardLevel1ScreenViewModel = viewModel(),
     playerBitmap: ImageBitmap = ImageBitmap.imageResource(R.drawable.sentiment_satisfied_45dp_e3e3e3_fill1_wght400_grad0_opsz48),
     onBack: () -> Unit = {}
 ) {
     val maze = listOf(
-        listOf(1,1,1,1,1,1,1,1,1),
-        listOf(1,0,0,0,0,0,0,0,1),
-        listOf(1,0,1,1,1,1,0,1,1),
-        listOf(1,0,1,0,0,0,0,1,1),
-        listOf(1,0,1,0,1,0,1,1,1),
-        listOf(1,0,0,0,1,0,0,0,1),
-        listOf(1,1,1,0,1,1,1,0,1),
-        listOf(1,0,0,0,0,0,0,0,1),
-        listOf(1,1,1,1,1,1,1,2,1)
+        listOf(1,1,1,1,1,1,1,1,1,1,2,1),
+        listOf(1,0,0,0,0,0,1,0,0,0,0,1),
+        listOf(1,0,1,1,1,1,1,1,1,1,0,1),
+        listOf(1,0,0,0,0,0,0,0,0,1,0,1),
+        listOf(1,0,1,0,1,1,1,1,0,1,0,1),
+        listOf(1,0,1,0,1,0,0,0,0,1,0,1),
+        listOf(1,1,1,0,1,0,1,1,1,1,0,1),
+        listOf(1,0,1,1,1,0,1,0,0,0,0,1),
+        listOf(1,0,1,0,0,0,1,0,1,1,1,1),
+        listOf(1,0,1,0,1,1,1,0,1,0,0,1),
+        listOf(1,0,0,0,0,0,0,0,0,0,0,1),
+        listOf(1,1,1,1,1,1,1,1,1,1,1,1)
     )
 
     var playerRow by remember { mutableIntStateOf(1) }

@@ -38,7 +38,8 @@ fun ChildLandingScreen(
     viewModel: ChildLandingScreenViewModel = viewModel(),
     navigateToEasyLevel1: () -> Unit = {},
     navigateToEasyLevel2: () -> Unit = {},
-    navigateToEasyLevel3: () -> Unit = {}
+    navigateToEasyLevel3: () -> Unit = {},
+    navigateToHardLevel1: () -> Unit = {}
 ) {
     val child by viewModel.child.collectAsState()
 
@@ -132,7 +133,8 @@ fun ChildLandingScreen(
                 HardDifficulty(
                     navigateBack = {
                         difficultySelection = true
-                    }
+                    },
+                    navigateToLevel1 = navigateToHardLevel1
                 )
             }
         } else {
@@ -233,7 +235,8 @@ fun EasyDifficulty(
 
 @Composable
 fun HardDifficulty(
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    navigateToLevel1: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -266,7 +269,16 @@ fun HardDifficulty(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = { }) {
+            Button(
+                onClick = {
+                    navigateToLevel1()
+                    if (!mediaPlayer.isPlaying) {
+                        mediaPlayer.start()
+                    } else {
+                        mediaPlayer.pause()
+                    }
+                }
+            ) {
                 Text(text = stringResource(R.string.level1))
             }
 
