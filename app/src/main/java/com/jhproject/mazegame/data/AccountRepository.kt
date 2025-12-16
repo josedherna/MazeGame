@@ -1,5 +1,7 @@
 package com.jhproject.mazegame.data
 
+import kotlinx.coroutines.flow.Flow
+
 class AccountRepository(private val parentChildDao: ParentChildDao) {
     suspend fun insertParent(parent: Parent) {
         parentChildDao.insertParent(parent)
@@ -27,5 +29,9 @@ class AccountRepository(private val parentChildDao: ParentChildDao) {
 
     suspend fun insertProgressLog(progressLog: ProgressLogs) {
         parentChildDao.insertProgressLog(progressLog)
+    }
+
+    fun getProgressLogs(childID: Int): Flow<List<ProgressLogs>> {
+        return parentChildDao.getProgressLogs(childID)
     }
 }

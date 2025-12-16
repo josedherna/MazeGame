@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.jhproject.mazegame.data.AccountRepository
 import com.jhproject.mazegame.data.Child
 import com.jhproject.mazegame.data.ParentWithChildren
+import com.jhproject.mazegame.data.ProgressLogs
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,5 +37,9 @@ class ParentLandingScreenViewModel(
             repository.insertChild(child)
             _parent.value = repository.getParentsWithChildren(parentId)
         }
+    }
+
+    fun getProgressLogs(childID: Int): Flow<List<ProgressLogs>> {
+        return repository.getProgressLogs(childID)
     }
 }

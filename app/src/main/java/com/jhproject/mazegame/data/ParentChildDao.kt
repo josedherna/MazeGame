@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ParentChildDao {
@@ -29,4 +30,7 @@ interface ParentChildDao {
 
     @Insert
     suspend fun insertProgressLog(progressLog: ProgressLogs)
+
+    @Query("SELECT * FROM child_progress WHERE childId = :childId ORDER BY id DESC")
+    fun getProgressLogs(childId: Int): Flow<List<ProgressLogs>>
 }
