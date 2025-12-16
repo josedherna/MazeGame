@@ -8,6 +8,7 @@ data class ProgressLogs(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val childId: Int,
+    val level: String,
     val progress: String,
     val dateTime: String
 )

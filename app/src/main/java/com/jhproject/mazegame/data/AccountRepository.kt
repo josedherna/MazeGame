@@ -24,4 +24,8 @@ class AccountRepository(private val parentChildDao: ParentChildDao) {
     suspend fun getParentsWithChildren(id: Int): ParentWithChildren? {
         return parentChildDao.getParentWithChildren(id)
     }
+
+    suspend fun insertProgressLog(progressLog: ProgressLogs) {
+        parentChildDao.insertProgressLog(progressLog)
+    }
 }
