@@ -40,7 +40,8 @@ fun ChildLandingScreen(
     navigateToEasyLevel2: () -> Unit,
     navigateToEasyLevel3: () -> Unit,
     navigateToHardLevel1: () -> Unit,
-    navigateToHardLevel2: () -> Unit
+    navigateToHardLevel2: () -> Unit,
+    navigateToHardLevel3: () -> Unit
 ) {
     val child by viewModel.child.collectAsState()
 
@@ -136,7 +137,8 @@ fun ChildLandingScreen(
                         difficultySelection = true
                     },
                     navigateToLevel1 = navigateToHardLevel1,
-                    navigateToLevel2 = navigateToHardLevel2
+                    navigateToLevel2 = navigateToHardLevel2,
+                    navigateToLevel3 = navigateToHardLevel3
                 )
             }
         } else {
@@ -240,7 +242,7 @@ fun HardDifficulty(
     navigateBack: () -> Unit,
     navigateToLevel1: () -> Unit,
     navigateToLevel2: () -> Unit,
-    navigateToLevel3: () -> Unit = {}
+    navigateToLevel3: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -303,7 +305,14 @@ fun HardDifficulty(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = { }) {
+            Button(
+                onClick = {
+                    navigateToLevel3()
+                    if (!mediaPlayer.isPlaying) {
+                        mediaPlayer.start()
+                    }
+                }
+            ) {
                 Text(text = stringResource(R.string.level3))
             }
 
